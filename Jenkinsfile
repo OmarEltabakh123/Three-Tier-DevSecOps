@@ -1,0 +1,48 @@
+pipeline {
+    agent any
+    environment {
+        DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
+        SONARQUBE_TOKEN = credentials('sonarqube-token')
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git 'https://github.com/OmarEltabakh123/Three-Tier-DevSecOps.git'
+            }
+        }
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    def scannerHome = tool 'SonarQubeScanner'
+                    withSonarQubeEnv('SonarQube') {
+                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=three-tier -Dsonar.sources=. -Dsonar.host.url=http://<vm-ip>:9000 -Dsonar.login=$SONARQUBE_TOKEN"
+                    }
+                }
+            }
+        }
+        stage('Trivy Scan') {
+            steps {
+                sh 'trivy fs --severity HIGH,CRITICAL .'
+                sh 'trivy image --severity HIGH,CRITICAL omareltabakh/frontend:latest'
+                sh 'trivy image --severity HIGH,CRITICAL omareltabakh/backend:latest'
+            }
+        }
+        stage('Build Docker Images') {
+            steps {
+                dir('frontend') {
+                    sh 'docker build -t omareltabakh/frontend:latest .'
+                }
+                dir('backend') {
+                    sh 'docker build -t omareltabakh/backend:latest .'
+                }
+            }
+        }
+        stage('Push to Docker Hub') {
+            steps {
+                sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+                sh 'docker push omareltabakh/frontend:latest'
+                sh 'docker push omareltabakh/backend:latest'
+            }
+        }
+    }
+}
