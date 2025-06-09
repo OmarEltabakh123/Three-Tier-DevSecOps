@@ -1,25 +1,34 @@
 pipeline {
     agent any
+
     environment {
         DOCKERHUB_CREDENTIALS = credentials('dockerhub-credentials')
-        SONARQUBE_TOKEN = credentials('sonarqube-token')
     }
+
     stages {
         stage('Checkout') {
             steps {
                 git 'https://github.com/OmarEltabakh123/Three-Tier-DevSecOps.git'
             }
         }
+
         stage('SonarQube Analysis') {
             steps {
                 script {
                     def scannerHome = tool 'SonarQubeScanner'
                     withSonarQubeEnv('SonarQube') {
-                        sh "${scannerHome}/bin/sonar-scanner -Dsonar.projectKey=three-tier -Dsonar.sources=. -Dsonar.host.url=http://<vm-ip>:9000 -Dsonar.login=$SONARQUBE_TOKEN"
+                        withCredentials([string(credentialsId: 'sonarqube-token', variable: 'TOKEN')]) {
+                            sh """${scannerHome}/bin/sonar-scanner \
+                              -Dsonar.projectKey=three-tier \
+                              -Dsonar.sources=. \
+                              -Dsonar.host.url=http://localhost:9000 \
+                              -Dsonar.login=$TOKEN"""
+                        }
                     }
                 }
             }
         }
+
         stage('Trivy Scan') {
             steps {
                 sh 'trivy fs --severity HIGH,CRITICAL .'
@@ -27,6 +36,7 @@ pipeline {
                 sh 'trivy image --severity HIGH,CRITICAL omareltabakh/backend:latest'
             }
         }
+
         stage('Build Docker Images') {
             steps {
                 dir('frontend') {
@@ -37,6 +47,7 @@ pipeline {
                 }
             }
         }
+
         stage('Push to Docker Hub') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
