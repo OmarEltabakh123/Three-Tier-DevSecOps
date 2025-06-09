@@ -153,7 +153,7 @@ Three-Tier-DevSecOps/
 - VM/Cloud Instance: With sufficient resources (4GB RAM, 2 CPUs recommended).
 
 ## Setup Instructions
-1. ### clone the Repository**
+1. ### clone the Repository
 ```bash
 git clone https://github.com/OmarEltabakh123/Three-Tier-DevSecOps.git
 cd Three-Tier-DevSecOps
