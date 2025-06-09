@@ -21,7 +21,7 @@ pipeline {
                             sh """${scannerHome}/bin/sonar-scanner \
                               -Dsonar.projectKey=three-tier \
                               -Dsonar.sources=. \
-                              -Dsonar.host.url=http://localhost:9000 \
+                              -Dsonar.host.url=http://192.168.15.156:9000 \
                               -Dsonar.login=$TOKEN"""
                         }
                     }
