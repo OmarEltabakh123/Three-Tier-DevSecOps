@@ -24,16 +24,3 @@ spec:
       volumes:
       - name: mongo-data
         emptyDir: {}
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: mongodb
-  namespace: default
-spec:
-  selector:
-    app: mongodb
-  ports:
-  - port: 27017
-    targetPort: 27017
-  type: ClusterIP
