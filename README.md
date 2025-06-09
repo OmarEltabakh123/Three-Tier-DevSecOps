@@ -100,6 +100,7 @@ The application follows a Three-Tier Architecture:
 
 
 **Deployment**:
+
 5. ArgoCD syncs Kubernetes manifests from the kubernetes/ folder.
 6. k3s cluster runs the application with NGINX Ingress for routing.
 
