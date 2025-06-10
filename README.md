@@ -1,5 +1,6 @@
 # Three-Tier DevSecOps Project
-
+![CI badge](https://github.com/cnescatlab/sonarqube/workflows/CI/badge.svg)
+![CD badge](https://github.com/cnescatlab/sonarqube/workflows/CD/badge.svg)
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white)
