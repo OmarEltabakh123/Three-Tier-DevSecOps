@@ -1,13 +1,13 @@
 # Three-Tier DevSecOps Project
-![CI badge](https://github.com/cnescatlab/sonarqube/workflows/CI/badge.svg)
-![CD badge](https://github.com/cnescatlab/sonarqube/workflows/CD/badge.svg)
+
 ![Kubernetes](https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)
 ![Jenkins](https://img.shields.io/badge/Jenkins-D24939?style=for-the-badge&logo=jenkins&logoColor=white)
 ![ArgoCD](https://img.shields.io/badge/ArgoCD-ef7b4d?style=for-the-badge&logo=argo&logoColor=white)
 ![Prometheus](https://img.shields.io/badge/Prometheus-E6522C?style=for-the-badge&logo=prometheus&logoColor=white)
 ![Git](https://img.shields.io/badge/Git-F05032?style=for-the-badge&logo=git&logoColor=white)
-
+![CI badge](https://github.com/cnescatlab/sonarqube/workflows/CI/badge.svg)
+![CD badge](https://github.com/cnescatlab/sonarqube/workflows/CD/badge.svg)
 ![alt text](Terraform-Ansible-project.gif)
 
 A modern Three-Tier DevSecOps application demonstrating a scalable, secure, and automated CI/CD pipeline. The project implements a React-based frontend, a Node.js/Express backend, and a MongoDB database, containerized with Docker, orchestrated with Kubernetes (k3s), and deployed using ArgoCD. The CI/CD pipeline leverages Jenkins, with SonarQube for code quality analysis and Trivy for security scanning, ensuring robust DevSecOps practices.
