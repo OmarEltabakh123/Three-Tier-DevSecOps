@@ -13,4 +13,16 @@ app.get('/', (req, res) => {
   res.json({ message: 'Welcome to the Backend!' });
 });
 
+app.get('/health', (req, res) => {
+  res.json({ status: 'UP' });
+});
+
+app.get('/api/v1', (req, res) => {
+  res.json({ message: 'API v1 root' });
+});
+
+app.get('/docs', (req, res) => {
+  res.send('<h1>API Documentation Coming Soon</h1>');
+});
+
 app.listen(5000, () => console.log('Server running on port 5000'));
