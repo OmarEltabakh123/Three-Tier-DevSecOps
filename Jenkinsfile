@@ -63,10 +63,10 @@ pipeline {
                 script {
                     sh """
                         # Update backend image tag
-                        sed -i 's|image: omareltabakh/backend:.*|image: omareltabakh/backend:latest|' kubernetes/backend/backend-deployment.yaml
+                        sed -i 's|image: omareltabakh/backend:.*|image: omareltabakh/backend:latest|' kubernetes/backend/deployment.yaml
                         
                         # Update frontend image tag
-                        sed -i 's|image: omareltabakh/frontend:.*|image: omareltabakh/frontend:latest|' kubernetes/frontend/frontend-deployment.yaml
+                        sed -i 's|image: omareltabakh/frontend:.*|image: omareltabakh/frontend:latest|' kubernetes/frontend/deployment.yaml
                     """
                 }
             }
