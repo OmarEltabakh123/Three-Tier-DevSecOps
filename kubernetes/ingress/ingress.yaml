@@ -8,13 +8,6 @@ spec:
   - host: three-tier.local
     http:
       paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: frontend-service
-            port:
-              number: 80
       - path: /api
         pathType: Prefix
         backend:
@@ -22,3 +15,10 @@ spec:
             name: backend-service
             port:
               number: 5000
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: frontend-service
+            port:
+              number: 80
