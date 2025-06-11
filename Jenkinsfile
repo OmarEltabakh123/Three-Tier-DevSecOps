@@ -41,11 +41,14 @@ pipeline {
 
         stage('Build Docker Images') {
             steps {
+                script {
+                    env.IMAGE_TAG = "build-${env.BUILD_NUMBER}"
+                }
                 dir('frontend') {
-                    sh 'docker build -t omareltabakh/frontend:latest .'
+                    sh 'docker build -t omareltabakh/frontend:$IMAGE_TAG .'
                 }
                 dir('backend') {
-                    sh 'docker build -t omareltabakh/backend:latest .'
+                    sh 'docker build -t omareltabakh/backend:$IMAGE_TAG .'
                 }
             }
         }
@@ -53,8 +56,8 @@ pipeline {
         stage('Push to Docker Hub') {
             steps {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
-                sh 'docker push omareltabakh/frontend:latest'
-                sh 'docker push omareltabakh/backend:latest'
+                sh 'docker push omareltabakh/frontend:$IMAGE_TAG'
+                sh 'docker push omareltabakh/backend:$IMAGE_TAG'
             }
         }
 
@@ -62,11 +65,22 @@ pipeline {
             steps {
                 script {
                     sh """
-                        # Update backend image tag
-                        sed -i 's|image: omareltabakh/backend:.*|image: omareltabakh/backend:latest|' kubernetes/backend/deployment.yaml
-                        
-                        # Update frontend image tag
-                        sed -i 's|image: omareltabakh/frontend:.*|image: omareltabakh/frontend:latest|' kubernetes/frontend/deployment.yaml
+                        sed -i 's|image: omareltabakh/backend:.*|image: omareltabakh/backend:$IMAGE_TAG|' kubernetes/backend/deployment.yaml
+                        sed -i 's|image: omareltabakh/frontend:.*|image: omareltabakh/frontend:$IMAGE_TAG|' kubernetes/frontend/deployment.yaml
+                    """
+                }
+            }
+        }
+
+        stage('Commit and Push YAML Changes') {
+            steps {
+                script {
+                    sh """
+                        git config user.email "jenkins@example.com"
+                        git config user.name "Jenkins"
+                        git add kubernetes/backend/deployment.yaml kubernetes/frontend/deployment.yaml
+                        git commit -m "Update image tags to $IMAGE_TAG"
+                        git push origin main
                     """
                 }
             }
