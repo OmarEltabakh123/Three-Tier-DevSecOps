@@ -18,11 +18,13 @@ pipeline {
                     def scannerHome = tool 'SonarQubeScanner'
                     withSonarQubeEnv('SonarQube') {
                         withCredentials([string(credentialsId: 'sonarqube-token', variable: 'TOKEN')]) {
-                            sh """${scannerHome}/bin/sonar-scanner \
-                              -Dsonar.projectKey=three-tier \
-                              -Dsonar.sources=. \
-                              -Dsonar.host.url=http://192.168.15.156:9000 \
-                              -Dsonar.login=$TOKEN"""
+                            sh """
+                                ${scannerHome}/bin/sonar-scanner \
+                                -Dsonar.projectKey=three-tier \
+                                -Dsonar.sources=. \
+                                -Dsonar.host.url=http://192.168.15.156:9000 \
+                                -Dsonar.login=$TOKEN
+                            """
                         }
                     }
                 }
@@ -53,6 +55,20 @@ pipeline {
                 sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
                 sh 'docker push omareltabakh/frontend:latest'
                 sh 'docker push omareltabakh/backend:latest'
+            }
+        }
+
+        stage('Update K8s Manifests') {
+            steps {
+                script {
+                    sh """
+                        # Update backend image tag
+                        sed -i 's|image: omareltabakh/backend:.*|image: omareltabakh/backend:latest|' kubernetes/backend/backend-deployment.yaml
+                        
+                        # Update frontend image tag
+                        sed -i 's|image: omareltabakh/frontend:.*|image: omareltabakh/frontend:latest|' kubernetes/frontend/frontend-deployment.yaml
+                    """
+                }
             }
         }
     }
