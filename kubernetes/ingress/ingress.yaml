@@ -3,8 +3,6 @@ kind: Ingress
 metadata:
   name: three-tier-ingress
   namespace: default
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
 spec:
   rules:
   - host: three-tier.local
