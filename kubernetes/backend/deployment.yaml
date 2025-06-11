@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: backend
-        image: omareltabakh/backend:latest
+        image: omareltabakh/backend:build-15
         ports:
         - containerPort: 5000
         env:
