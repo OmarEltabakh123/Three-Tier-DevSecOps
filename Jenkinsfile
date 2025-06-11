@@ -71,19 +71,5 @@ pipeline {
                 }
             }
         }
-
-        stage('Commit and Push YAML Changes') {
-            steps {
-                script {
-                    sh """
-                        git config user.email "jenkins@example.com"
-                        git config user.name "Jenkins"
-                        git add kubernetes/backend/deployment.yaml kubernetes/frontend/deployment.yaml
-                        git commit -m "Update image tags to $IMAGE_TAG"
-                        git push origin main
-                    """
-                }
-            }
-        }
     }
 }
